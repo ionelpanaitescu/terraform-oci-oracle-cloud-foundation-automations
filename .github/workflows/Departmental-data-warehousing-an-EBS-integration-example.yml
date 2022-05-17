@@ -61,17 +61,20 @@ jobs:
       - name: 'Init Terraform'
         id: init
         run: |
-          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example           terraform init 
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example          
+          terraform init 
 
       - name: 'Validate Terraform'
         id: validate
         run: |
-          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example          terraform validate
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example         
+          terraform validate
       
       - name: 'Terraform Plan'
         id: plan 
         run: |
-          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example          terraform plan
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example
+          terraform plan
         continue-on-error: true
 
       - name: 'Terraform Apply'

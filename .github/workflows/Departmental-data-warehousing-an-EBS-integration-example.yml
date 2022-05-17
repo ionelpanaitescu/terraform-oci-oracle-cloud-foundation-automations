@@ -86,10 +86,14 @@ jobs:
 
       - name: 'Terraform Apply'
         id: apply 
-        run: terraform apply -auto-approve
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example
+          terraform apply -auto-approve
         continue-on-error: true
 
       - name: 'Terraform Destroy'
         id: destroy 
-        run: terraform destroy -auto-approve
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example
+          terraform destroy -auto-approve
 

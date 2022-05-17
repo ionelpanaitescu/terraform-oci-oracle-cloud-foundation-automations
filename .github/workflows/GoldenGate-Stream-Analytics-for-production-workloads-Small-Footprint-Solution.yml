@@ -79,9 +79,14 @@ jobs:
 
       - name: 'Terraform Apply'
         id: apply 
-        run: terraform apply -auto-approve
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/GoldenGate-Stream-Analytics-for-production-workloads-Small-Footprint-Solution
+          terraform apply -auto-approve
         continue-on-error: true
 
       - name: 'Terraform Destroy'
         id: destroy 
-        run: terraform destroy -auto-approve
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/GoldenGate-Stream-Analytics-for-production-workloads-Small-Footprint-Solution
+          terraform destroy -auto-approve
+

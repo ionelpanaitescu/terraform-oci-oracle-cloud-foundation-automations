@@ -17,6 +17,13 @@ jobs:
       TF_VAR_private_key_path: ${{secrets.TF_VAR_PRIVATE_KEY_PATH}}
       TF_VAR_fingerprint: ${{secrets.TF_VAR_fingerprint}}
       TF_VAR_region: ${{secrets.TF_VAR_region}}
+      TF_VAR_database_admin_password: ${{secrets.TF_VAR_database_admin_password}}
+      TF_VAR_database_wallet_password: ${{secrets.TF_VAR_database_wallet_password}}
+      TF_VAR_analytics_instance_idcs_access_token: ${{secrets.TF_VAR_analytics_instance_idcs_access_token}}
+      TF_VAR_adw_password: ${{secrets.TF_VAR_adw_password}}
+      TF_VAR_odi_vnc_password: ${{secrets.TF_VAR_odi_vnc_password}}
+      TF_VAR_odi_schema_password: ${{secrets.TF_VAR_odi_schema_password}}
+      TF_VAR_odi_password: ${{secrets.TF_VAR_odi_password}}
 
     steps:
       - uses: actions/checkout@v2

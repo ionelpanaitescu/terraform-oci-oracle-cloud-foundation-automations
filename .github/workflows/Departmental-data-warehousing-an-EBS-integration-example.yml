@@ -1,8 +1,15 @@
 name: Departmental-data-warehousing-an-EBS-integration-example
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning' 
+        type: choice
+  # push:
+  #   branches:
+  #     - main
   schedule:
      - cron:  '0 0 * * FRI'    # In every Friday at 0:00 o`clock.
 
@@ -65,23 +72,23 @@ jobs:
           cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example
           ls
 
-      - name: 'testing backend'
-        run: |
-          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example          
-          echo  "terraform {
-                  backend s3 {
-                  bucket   = "statefiles" 
-                  key      = "solutions/Departmental-data-warehousing-an-EBS-integration-example.tfstate"
-                  region   = "us-ashburn-1"
-                  endpoint = "https://oradbclouducm.compat.objectstorage.us-ashburn-1.oraclecloud.com"
-                  shared_credentials_file     = "~/.aws/credentials" 
-                  skip_region_validation      = true
-                  skip_credentials_validation = true 
-                  skip_metadata_api_check     = true
-                  force_path_style            = true
-                  }
-                  }" >> provider.tf
-          cat provider.tf
+      # - name: 'testing backend'
+      #   run: |
+      #     cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example          
+      #     echo  "terraform {
+      #             backend s3 {
+      #             bucket   = "statefiles" 
+      #             key      = "solutions/Departmental-data-warehousing-an-EBS-integration-example.tfstate"
+      #             region   = "us-ashburn-1"
+      #             endpoint = "https://oradbclouducm.compat.objectstorage.us-ashburn-1.oraclecloud.com"
+      #             shared_credentials_file     = "~/.aws/credentials" 
+      #             skip_region_validation      = true
+      #             skip_credentials_validation = true 
+      #             skip_metadata_api_check     = true
+      #             force_path_style            = true
+      #              }
+      #             }" >> provider.tf
+      #     cat provider.tf
 
 
       - name: 'Init Terraform'
@@ -96,24 +103,24 @@ jobs:
           cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example         
           terraform validate
       
-      # - name: 'Terraform Plan'
-      #   id: plan 
-      #   run: |
-      #     cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example
-      #     terraform plan
-      #   continue-on-error: true
+      - name: 'Terraform Plan'
+        id: plan 
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example
+          terraform plan
+        continue-on-error: true
 
-      # - name: 'Terraform Apply'
-      #   id: apply 
-      #   run: |
-      #     cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example
-      #     terraform apply -auto-approve
-      #   continue-on-error: true
+      - name: 'Terraform Apply'
+        id: apply 
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example
+          terraform apply -auto-approve
+        continue-on-error: true
 
-      # - name: 'Terraform Destroy'
-      #   id: destroy 
-      #   run: |
-      #     cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example
-      #     terraform destroy -auto-approve
+      - name: 'Terraform Destroy'
+        id: destroy 
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example
+          terraform destroy -auto-approve
      
 

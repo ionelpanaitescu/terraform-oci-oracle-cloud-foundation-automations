@@ -33,15 +33,20 @@ jobs:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v2
 
-      - name: 'Install Docker'
+      - name: 'Install Fn Project CLI '
         run: |
-          apt update
-          apt install apt-transport-https ca-certificates curl software-properties-common
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-          apt-cache policy docker-ce
-          apt install docker-ce
-          systemctl status docker
+          curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh
+          fn version
+
+      # - name: 'Install Docker'
+      #   run: |
+      #     apt update
+      #     apt install apt-transport-https ca-certificates curl software-properties-common
+      #     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      #     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+      #     apt-cache policy docker-ce
+      #     apt install docker-ce
+      #     systemctl status docker
 
       - name: 'Write Config & Key Files for OCI provider'
         run: |
@@ -98,17 +103,17 @@ jobs:
           terraform plan
         continue-on-error: true
 
-      # - name: 'Terraform Apply'
-      #   id: apply 
-      #   run: |
-      #     cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Enterprise-data-warehousing-a-predictive-maintenance-example
-      #     terraform apply -auto-approve
-      #   continue-on-error: true
+      - name: 'Terraform Apply'
+        id: apply 
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Enterprise-data-warehousing-a-predictive-maintenance-example
+          terraform apply -auto-approve
+        continue-on-error: true
 
-      # - name: 'Terraform Destroy'
-      #   id: destroy 
-      #   run: |
-      #     cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Enterprise-data-warehousing-a-predictive-maintenance-example
-      #     terraform destroy -auto-approve
+      - name: 'Terraform Destroy'
+        id: destroy 
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Enterprise-data-warehousing-a-predictive-maintenance-example
+          terraform destroy -auto-approve
      
 

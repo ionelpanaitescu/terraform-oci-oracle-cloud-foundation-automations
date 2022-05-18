@@ -82,7 +82,7 @@ jobs:
                   force_path_style            = true
                   }
                  }
-               EOF
+              EOF
           cat provider.tf
 
 

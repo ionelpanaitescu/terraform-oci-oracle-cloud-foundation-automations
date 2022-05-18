@@ -6,9 +6,11 @@ on:
         description: 'Job to run.'
         required: true
         default: 'prod-deploy'
+        
   # push:
   #   branches:
   #     - main
+
   schedule:
      - cron:  '0 0 * * FRI'    # In every Friday at 0:00 o`clock.
 

@@ -2,11 +2,10 @@ name: Departmental-data-warehousing-an-EBS-integration-example
 on:
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Log level'     
+      job:
+        description: 'Job to run.'
         required: true
-        default: 'warning' 
-        type: choice
+        default: 'prod-deploy'
   # push:
   #   branches:
   #     - main
@@ -17,6 +16,7 @@ jobs:
   build-with-terraform:
     name: Build With Terraform
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.job == 'prod-deploy'}}
     env:
       TF_VAR_tenancy_ocid: ${{secrets.TF_VAR_tenancy_ocid}}
       TF_VAR_compartment_id: ${{secrets.TF_VAR_compartment_id}}

@@ -1,0 +1,128 @@
+name: Departmental-data-warehousing-Small-Footprint-Solution
+on:
+  workflow_dispatch:
+    inputs:
+      job:
+        description: 'Job to run.'
+        required: true
+        default: 'prod-deploy'
+        
+  # push:
+  #   branches:
+  #     - main
+
+  schedule:
+     - cron:  '0 0 * * FRI'    # In every Friday at 0:00 o`clock.
+
+jobs:
+  build-with-terraform:
+    name: Build With Terraform
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.job == 'prod-deploy'}}
+    env:
+      TF_VAR_tenancy_ocid: ${{secrets.TF_VAR_tenancy_ocid}}
+      TF_VAR_compartment_id: ${{secrets.TF_VAR_compartment_id}}
+      TF_VAR_user_ocid: ${{secrets.TF_VAR_user_ocid}}
+      TF_VAR_private_key_path: ${{secrets.TF_VAR_PRIVATE_KEY_PATH}}
+      TF_VAR_fingerprint: ${{secrets.TF_VAR_fingerprint}}
+      TF_VAR_region: ${{secrets.TF_VAR_region}}
+      TF_VAR_database_admin_password: ${{secrets.TF_VAR_database_admin_password}}
+      TF_VAR_database_wallet_password: ${{secrets.TF_VAR_database_wallet_password}}
+      TF_VAR_analytics_instance_idcs_access_token: ${{secrets.TF_VAR_analytics_instance_idcs_access_token}}
+      TF_VAR_adw_password: ${{secrets.TF_VAR_adw_password}}
+      TF_VAR_odi_vnc_password: ${{secrets.TF_VAR_odi_vnc_password}}
+      TF_VAR_odi_schema_password: ${{secrets.TF_VAR_odi_schema_password}}
+      TF_VAR_odi_password: ${{secrets.TF_VAR_odi_password}}
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v2
+
+      - name: 'Write Config & Key Files for OCI provider'
+        run: |
+          mkdir ~/.oci
+          echo "[DEFAULT]" >> ~/.oci/config
+          echo "user=${{secrets.TF_VAR_USER_OCID}}" >> ~/.oci/config
+          echo "fingerprint=${{secrets.TF_VAR_FINGERPRINT}}" >> ~/.oci/config
+          echo "region=${{secrets.TF_VAR_REGION}}" >> ~/.oci/config
+          echo "tenancy=${{secrets.TF_VAR_TENANCY_OCID}}" >> ~/.oci/config
+          echo "key_file=~/.oci/oci_api_key.pem" >> ~/.oci/config
+          echo "${{secrets.PRIVATE_KEY_PATH}}" >> ~/.oci/oci_api_key.pem
+      - name: 'Install OCI CLI'
+        run: |
+          curl -L -O https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh
+          chmod +x install.sh
+          ./install.sh --accept-all-defaults
+          echo "~/bin" >> $GITHUB_PATH
+          exec -l $SHELL
+      - name: 'Fix OCI Config File Permissions'
+        run: |
+          oci setup repair-file-permissions --file ~/.oci/config
+          oci setup repair-file-permissions --file ~/.oci/oci_api_key.pem
+      - name: 'Write credentials for S3 backend compatibility under user\.aws\credential'
+        run: |
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+      - name: 'Install Git and Clone the repository'
+        run: |
+          sudo apt-get install dh-autoreconf libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev
+          git --version
+          cd ~
+          git clone https://github.com/oracle-devrel/terraform-oci-oracle-cloud-foundation.git
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-Small-Footprint-Solution
+          ls
+
+      # - name: 'testing backend'
+      #   run: |
+      #     cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example          
+      #     echo  "terraform {
+      #             backend s3 {
+      #             bucket   = "statefiles" 
+      #             key      = "solutions/Departmental-data-warehousing-an-EBS-integration-example.tfstate"
+      #             region   = "us-ashburn-1"
+      #             endpoint = "https://oradbclouducm.compat.objectstorage.us-ashburn-1.oraclecloud.com"
+      #             shared_credentials_file     = "~/.aws/credentials" 
+      #             skip_region_validation      = true
+      #             skip_credentials_validation = true 
+      #             skip_metadata_api_check     = true
+      #             force_path_style            = true
+      #              }
+      #             }" >> provider.tf
+      #     cat provider.tf
+
+
+      - name: 'Init Terraform'
+        id: init
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-Small-Footprint-Solution
+          terraform init 
+
+      - name: 'Validate Terraform'
+        id: validate
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-Small-Footprint-Solution
+          terraform validate
+      
+      - name: 'Terraform Plan'
+        id: plan 
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-Small-Footprint-Solution
+          terraform plan
+        continue-on-error: true
+
+      - name: 'Terraform Apply'
+        id: apply 
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-Small-Footprint-Solution
+          terraform apply -auto-approve
+        continue-on-error: true
+
+      - name: 'Terraform Destroy'
+        id: destroy 
+        run: |
+          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-Small-Footprint-Solution
+          terraform destroy -auto-approve
+     
+

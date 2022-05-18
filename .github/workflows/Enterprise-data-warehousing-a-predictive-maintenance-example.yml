@@ -37,7 +37,6 @@ jobs:
         run: |
           curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh
           fn version
-
       - name: 'Write Config & Key Files for OCI provider'
         run: |
           mkdir ~/.oci

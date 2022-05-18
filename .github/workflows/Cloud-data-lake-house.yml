@@ -30,7 +30,8 @@ jobs:
       TF_VAR_database_wallet_password: ${{secrets.TF_VAR_database_wallet_password}}
       TF_VAR_analytics_instance_idcs_access_token: ${{secrets.TF_VAR_analytics_instance_idcs_access_token}}
       TF_VAR_big_data_cluster_public_key: ${{secrets.TF_VAR_BIG_DATA_CLUSTER_PUBLIC_KEY}}
-
+      big_data_cluster_public_key: "/home/runner/.oci/id_rsa.pub"
+      
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v2
@@ -45,6 +46,8 @@ jobs:
           echo "tenancy=${{secrets.TF_VAR_TENANCY_OCID}}" >> ~/.oci/config
           echo "key_file=~/.oci/oci_api_key.pem" >> ~/.oci/config
           echo "${{secrets.PRIVATE_KEY_PATH}}" >> ~/.oci/oci_api_key.pem
+          echo "${{secrets.TF_VAR_BIG_DATA_CLUSTER_PUBLIC_KEY}}" >> ~/.oci/id_rsa.pub
+          
       - name: 'Install OCI CLI'
         run: |
           curl -L -O https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh

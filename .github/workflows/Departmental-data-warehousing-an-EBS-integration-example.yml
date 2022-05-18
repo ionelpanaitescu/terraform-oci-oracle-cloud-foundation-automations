@@ -68,18 +68,19 @@ jobs:
       - name: 'testing backend'
         run: |
           cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example          
-          echo  "terraform { \n 
-                  backend s3 {\n 
-                  bucket   = "statefiles"\n 
-                  key      = "solutions/Departmental-data-warehousing-an-EBS-integration-example.tfstate"\n 
-                  region   = "us-ashburn-1"\n 
-                  endpoint = "https://oradbclouducm.compat.objectstorage.us-ashburn-1.oraclecloud.com"\n 
-                  shared_credentials_file     = "~/.aws/credentials"\n 
-                  skip_region_validation      = true\n 
-                  skip_credentials_validation = true\n 
-                  skip_metadata_api_check     = true\n 
-                  force_path_style            = true\n 
-                  }\n } \n " >> provider.tf
+          echo  "terraform {
+                  backend s3 {
+                  bucket   = "statefiles" 
+                  key      = "solutions/Departmental-data-warehousing-an-EBS-integration-example.tfstate"
+                  region   = "us-ashburn-1"
+                  endpoint = "https://oradbclouducm.compat.objectstorage.us-ashburn-1.oraclecloud.com"
+                  shared_credentials_file     = "~/.aws/credentials" 
+                  skip_region_validation      = true
+                  skip_credentials_validation = true 
+                  skip_metadata_api_check     = true
+                  force_path_style            = true
+                  }
+                  }" >> provider.tf
           cat provider.tf
 
 

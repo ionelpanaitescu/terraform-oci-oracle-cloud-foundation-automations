@@ -83,10 +83,3 @@ jobs:
           cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/GoldenGate-Stream-Analytics-for-production-workloads-Small-Footprint-Solution
           terraform apply -auto-approve
         continue-on-error: true
-
-      - name: 'Terraform Destroy'
-        id: destroy 
-        run: |
-          cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/GoldenGate-Stream-Analytics-for-production-workloads-Small-Footprint-Solution
-          terraform destroy -auto-approve
-

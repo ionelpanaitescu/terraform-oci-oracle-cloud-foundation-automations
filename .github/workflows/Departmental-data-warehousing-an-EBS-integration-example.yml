@@ -118,4 +118,5 @@ jobs:
       #   run: |
       #     cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example
       #     terraform destroy -auto-approve
+     
 

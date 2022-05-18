@@ -68,7 +68,7 @@ jobs:
       - name: 'testing backend'
         run: |
           cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example          
-          cat <<- EOF | sed 's/^[[:space:]]*//' > provider.tf
+          cat <<- EOF  > provider.tf
                 terraform {
                   backend s3 {
                   bucket   = "statefiles"
@@ -82,7 +82,7 @@ jobs:
                   force_path_style            = true
                   }
                  }
-             EOF
+               EOF
           cat provider.tf
 
 

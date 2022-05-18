@@ -68,9 +68,9 @@ jobs:
       - name: 'testing backend'
         run: |
           cd ~/terraform-oci-oracle-cloud-foundation/cloud-foundation/solutions/Departmental-data-warehousing-an-EBS-integration-example          
-          cat > provider.tf <<EOF
+           	cat <<- EOF | sed 's/^[[:space:]]*//' > provider.tf
                 terraform {
-                  backend "s3" {
+                  backend s3 {
                   bucket   = "statefiles"
                   key      = "solutions/Departmental-data-warehousing-an-EBS-integration-example.tfstate"
                   region   = "us-ashburn-1"
@@ -81,7 +81,7 @@ jobs:
                   skip_metadata_api_check     = true
                   force_path_style            = true
                   }
-                }
+                 }
             EOF
 
           cat provider.tf

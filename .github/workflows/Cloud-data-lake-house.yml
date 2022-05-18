@@ -30,7 +30,7 @@ jobs:
       TF_VAR_database_wallet_password: ${{secrets.TF_VAR_database_wallet_password}}
       TF_VAR_analytics_instance_idcs_access_token: ${{secrets.TF_VAR_analytics_instance_idcs_access_token}}
       # TF_VAR_big_data_cluster_public_key: ${{secrets.TF_VAR_BIG_DATA_CLUSTER_PUBLIC_KEY}}
-      big_data_cluster_public_key: "/home/runner/.oci/id_rsa.pub"
+      TF_VAR_big_data_cluster_public_key: "/home/runner/.oci/id_rsa.pub"
       
     steps:
       - uses: actions/checkout@v2

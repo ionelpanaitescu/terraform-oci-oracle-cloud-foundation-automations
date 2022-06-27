@@ -14,6 +14,6 @@ jobs:
     steps:
       - name: run-ghrs
         # Use latest release.
-        uses: ionelpanaitescu/main
+        uses: ionelpanaitescu/terraform-oci-oracle-cloud-foundation-automations@MAIN
         with:
           ghtoken: ${{ secrets.ghrs_github_api_token }}

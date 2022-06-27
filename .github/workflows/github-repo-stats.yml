@@ -9,7 +9,7 @@ on:
 
 jobs:
   j1:
-    name: github-repo-stats
+    name: main
     runs-on: ubuntu-latest
     steps:
       - name: run-ghrs

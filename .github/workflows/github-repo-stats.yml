@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: run-ghrs
-        uses: ionelpanaitescu/terraform-oci-oracle-cloud-foundation-automations@main
+        uses: jgehrcke/github-repo-stats@RELEASE
         with:
           # Define the stats repository (the repo to fetch
           # stats for and to generate the report for).
           # Remove the parameter when the stats repository
           # and the data repository are the same.
-          repository: ionelpanaitescu/terraform-oci-oracle-cloud-foundation-automations
+          repository: ionelpanaitescu/terraform-oci-oracle-cloud-foundation-automations@main
           # Set a GitHub API token that can read the GitHub
           # repository traffic API for the stats repository,
           # and that can push commits to the data repository
